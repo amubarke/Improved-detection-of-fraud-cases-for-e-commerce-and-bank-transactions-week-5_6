@@ -3,41 +3,59 @@ from collections import Counter
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
 
+
 class ImbalanceHandler:
+    """
+    Utility class to handle imbalanced datasets using SMOTE or undersampling.
+    """
+
     def __init__(self, method="smote", random_state=42):
-        self.method = method
+        """
+        Parameters:
+        - method (str): "smote" or "undersample"
+        - random_state (int): reproducibility
+        """
+        self.method = method.lower()
         self.random_state = random_state
         self.resampler = None
 
     # ----------------------------------------------------
-    # Select resampling method
+    # Create resampling strategy
     # ----------------------------------------------------
-    def _get_resampler(self):
+    def _create_resampler(self):
         if self.method == "smote":
             return SMOTE(random_state=self.random_state)
         elif self.method == "undersample":
             return RandomUnderSampler(random_state=self.random_state)
         else:
-            raise ValueError("method must be 'smote' or 'undersample'")
+            raise ValueError("method must be either 'smote' or 'undersample'.")
 
     # ----------------------------------------------------
-    # Report class distribution
+    # Print class distribution
     # ----------------------------------------------------
-    def class_distribution(self, y):
+    @staticmethod
+    def class_distribution(y):
         return pd.Series(Counter(y)).sort_index()
 
     # ----------------------------------------------------
-    # Fit & Resample (training data only)
+    # Fit on TRAIN data only & resample
     # ----------------------------------------------------
     def fit_resample(self, X_train, y_train):
-        self.resampler = self._get_resampler()
+        """
+        Perform resampling on training data.
 
-        print("📌 BEFORE RESAMPLING:")
+        Returns:
+            X_resampled, y_resampled
+        """
+        self.resampler = self._create_resampler()
+
+        print("📊 BEFORE RESAMPLING:")
         print(self.class_distribution(y_train))
 
-        X_res, y_res = self.resampler.fit_resample(X_train, y_train)
+        # Apply SMOTE / undersampling
+        X_resampled, y_resampled = self.resampler.fit_resample(X_train, y_train)
 
-        print("\n📌 AFTER RESAMPLING:")
-        print(self.class_distribution(y_res))
+        print("\n📊 AFTER RESAMPLING:")
+        print(self.class_distribution(y_resampled))
 
-        return X_res, y_res
+        return X_resampled, y_resampled
