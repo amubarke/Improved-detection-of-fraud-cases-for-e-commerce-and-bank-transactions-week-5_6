@@ -27,7 +27,6 @@ Detect fraudulent transactions accurately while minimizing false positives, redu
 ---
 
 ## 2. Folder Structure
-
 fraud-detection/
 ├── .vscode/
 │ └── settings.json
