@@ -24,9 +24,8 @@ Key steps include:
 **Business Objective:**  
 Detect fraudulent transactions accurately while minimizing false positives, reducing financial loss, and improving customer trust.
 
----
-
-## 2. Folder Structure
+```
+1. Folder Structure
 fraud-detection/
 ├── .vscode/
 │ └── settings.json
@@ -64,7 +63,7 @@ fraud-detection/
 ├── requirements.txt
 ├── README.md
 └── .gitignore
-
+```
 
 ---
 
